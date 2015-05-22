@@ -1,0 +1,9 @@
+{
+  "name": "lip",
+  "version": "${FBSTRING_PLUGIN_VERSION}",
+  "description": "Serial Port for JavaScript",
+
+	"plugins": [
+    { "path": "nplip.dll", "public": true }
+  ]
+}

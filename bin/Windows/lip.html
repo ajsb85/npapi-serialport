@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <title>Leonux Plugin para Impresión Fiscal</title>
+  </head>
+  <script type="text/javascript">
+    var ser;
+    function plugin0(){
+      return document.getElementById('lip');
+    }
+    leonux = plugin0;
+    
+    function recv(bytes, size){
+      for(var i=0;i<size;++i){
+        ser.send(bytes[i]);
+      }
+    }
+    
+    function pluginLoaded(){
+      ser = leonux().Serial;
+      ser.open("COM1");
+      /*
+      * * **baud:**       Baud rate
+      * * **parity:**     0->none, 1->odd, 2->even
+      * * **csize:**      5 6 7 8
+      * * **flow:**       0->none, 1->software, 2->hardware
+      * * **stop:**       0->one,  1->onepointfive, 2->two
+      */
+      ser.set_option(115200,0,8,0,0);
+      ser.recv_callback(recv);
+    }
+
+    function pluginValid(){
+      if(leonux().valid){
+        alert(leonux().echo("¡Este plugin funciona!"));
+        document.getElementById('version').innerHTML = "v" + leonux().version;
+      } else {
+        alert("Este plugin no funciona :(");
+      }
+    }
+  </script>
+  <body onload="pluginValid()">
+    <object id="lip" type="application/x-lip" width="0" height="0" >
+      <param name="onload" value="pluginLoaded" />
+    </object><br />
+    <h1>Leonux Plugin para Impresión Fiscal <span id="version"></span></h1><br/>
+    Este experimento envía por el puerto serial el mismo dato que recive.
+  </body>
+</html>
